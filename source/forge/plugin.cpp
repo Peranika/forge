@@ -1,4 +1,5 @@
 #include "forge/plugin.h"
+#include "forge/game.h"
 #include "forge/hook.h"
 #include "forge/log.h"
 #include "forge/mem.h"
@@ -184,7 +185,7 @@ void forge_plugin_onUpdateHook(void* main)
 extern "C" void forge_plugin_init(void)
 {
     s_pluginLoader.update_hook = forge_hook_create(
-        (void*)(g_mainTextAddr + 0x3DA8FC),
+        (void*)(g_mainTextAddr + g_game->update),
         (void*)forge_plugin_onUpdateHook,
         (void**)&s_pluginLoader.original_update);
 }

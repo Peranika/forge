@@ -2,6 +2,7 @@
 #include "Mt/MtCRC.h"
 #include "Mt/MtDti.h"
 #include "Mt/MtObject.h"
+#include "forge/game.h"
 #include "forge/hook.h"
 #include "forge/log.h"
 #include "forge/mem.h"
@@ -35,8 +36,8 @@ void* cSystemDtorHook(void* sys)
 
 extern "C" void forge_singleton_init(void)
 {
-    const auto ctor = (void*)(g_mainTextAddr + 0x887810);
-    const auto dtor = (void*)(g_mainTextAddr + 0x88784C);
+    const auto ctor = (void*)(g_mainTextAddr + g_game->system_ctor);
+    const auto dtor = (void*)(g_mainTextAddr + g_game->system_dtor);
 
     s_cSystemCtorHook = forge_hook_create(ctor, (void*)cSystemCtorHook, (void**)&s_originalSystemCtor);
     s_cSystemDtorHook = forge_hook_create(dtor, (void*)cSystemDtorHook, (void**)&s_originalSystemDtor);

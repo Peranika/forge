@@ -15,8 +15,9 @@ bash build-hardware.sh
 
 Set `PYTHON` to a Python 3 executable if it is not available as `python3`.
 The script sets devkitARM paths only for its child processes and accepts normal
-Make arguments. Outputs are `subsdk.elf`, `subsdk.nso` and `main.npdm`.
-Deploy `subsdk.nso` as `exefs/subsdk9`, alongside `exefs/main.npdm`.
+Make arguments. Outputs are `subsdk.elf`, `subsdk.nso`, `main.npdm` (MHGU) and
+`main-mhxx.npdm` (MHXX). Deploy `subsdk.nso` as `exefs/subsdk9`, alongside the
+game's NPDM as `exefs/main.npdm`.
 
 The compiler version matters because the vendored PIC container support sources
 must match the installed libstdc++ headers. Existing third-party repositories

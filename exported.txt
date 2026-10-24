@@ -19,6 +19,8 @@
 
         forge_fs_*;
 
+        forge_game_get*;
+
         ig*;
         Im*;
 

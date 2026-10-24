@@ -1,4 +1,5 @@
 #include "forge/config.h"
+#include "forge/game.h"
 #include "forge/graphics.h"
 #include "forge/hook.h"
 #include "forge/input.h"
@@ -46,6 +47,11 @@ void forge_main()
         forge_log_trace("[WARN] [forge] Running a non-release build, expect instability and crashes");
     }
 
+    if (!forge_game_init()) {
+        forge_log_trace("[forge] Not loading Forge on an unsupported game");
+        return;
+    }
+
     const Result r = forge_hook_init();
     if (R_FAILED(r)) {
         forge_log_trace("[forge] Failed to initialize hooking API: 0x%08X", r);
@@ -59,5 +65,5 @@ void forge_main()
     forge_input_init();
     forge_singleton_init();
 
-    forge_hook_create((void*)(g_mainTextAddr + 0xB8692C), (void*)(sApp_run), (void**)(&original_sApp_run));
+    forge_hook_create((void*)(g_mainTextAddr + g_game->app_run), (void*)(sApp_run), (void**)(&original_sApp_run));
 }

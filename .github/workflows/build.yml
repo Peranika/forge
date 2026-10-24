@@ -48,6 +48,7 @@ jobs:
           path: |
             subsdk.nso
             main.npdm
+            main-mhxx.npdm
             data/config.ini
             data/fonts/Roboto-Medium.ttf
             data/shaders/imgui_frag.fsh

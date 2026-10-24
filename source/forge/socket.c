@@ -1,4 +1,5 @@
 #include "forge/socket.h"
+#include "forge/game.h"
 #include "forge/mem.h"
 #include "forge/types.h"
 
@@ -11,9 +12,6 @@
 #define SOCKET_POOL_SIZE 0xC0000 // 768 KB (minimum)
 #define SOCKET_ALLOC_POOL_SIZE 0x20000 // 128 KB
 
-#define GAME_SOCKET_INIT_OFFSET 0x813B44
-#define GAME_SOCKET_OBJECT_OFFSET 0x191EEE8
-
 static u8* s_socketPool = NULL;
 typedef void (*GameSocketInit)(void*, int*);
 
@@ -24,10 +22,10 @@ int forge_socket_initDefault(void)
     return forge_socket_init(s_socketPool, SOCKET_POOL_SIZE, SOCKET_ALLOC_POOL_SIZE, 4);
 #else
     int result = 0;
-    void* socketObj = *(void**)(g_mainTextAddr + GAME_SOCKET_OBJECT_OFFSET);
+    void* socketObj = *(void**)(g_mainTextAddr + g_game->socket_object);
     void* realObj = *(void**)((u8*)socketObj + 0x2C);
 
-    GameSocketInit init = (GameSocketInit)(g_mainTextAddr + GAME_SOCKET_INIT_OFFSET);
+    GameSocketInit init = (GameSocketInit)(g_mainTextAddr + g_game->socket_init);
 
     init(realObj, &result);
 

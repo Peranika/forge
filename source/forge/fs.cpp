@@ -1,19 +1,18 @@
 #include "forge/fs.h"
+#include "forge/game.h"
 #include "forge/mem.h"
 #include "forge/singleton.h"
 
 #include <nn/fs.h>
 #include <nn/os.h>
 
-constexpr size_t kMountSaveDataOffset = 0x878DA0;
-constexpr size_t kJobSafeOffset = 0x212041C;
 constexpr auto kSaveDataMountPoint = "savedata";
 constexpr auto kRomFsMountPoint = "app";
 
 namespace {
 bool isJobSafe()
 {
-    return *(bool*)(g_mainTextAddr + kJobSafeOffset);
+    return *(bool*)(g_mainTextAddr + g_game->job_safe);
 }
 
 bool isThreadSafe(void* saveData)
@@ -34,7 +33,7 @@ int& mountCount(void* saveData)
 
 extern "C" bool forge_fs_mountSaveData(void)
 {
-    const auto mount = (int (*)(void*))(g_mainTextAddr + kMountSaveDataOffset);
+    const auto mount = (int (*)(void*))(g_mainTextAddr + g_game->mount_save_data);
     const auto saveData = forge_singleton_getInstanceByName("sSavedata");
     if (saveData == nullptr) {
         return false;

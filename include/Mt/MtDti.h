@@ -5,6 +5,7 @@
 #include "Mt/MtFunc.h"
 #include "Mt/MtObject.h"
 #include "Mt/MtPtr.h"
+#include "forge/game.h"
 #include "switch/types.h"
 
 #include <string_view>
@@ -106,7 +107,7 @@ public:
 
     static inline MtDti* find(u32 id)
     {
-        return MtFunc::invoke<MtDti*>(0x1177F68, id);
+        return MtFunc::invoke<MtDti*>(g_game->dti_find, id);
     }
 
     static inline MtDti* find(std::string_view name)

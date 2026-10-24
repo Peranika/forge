@@ -2,6 +2,10 @@
 
 An environment for linking, runtime hooking and code patching in Monster Hunter Generations Ultimate.
 
+Monster Hunter XX (JP, 1.5.1) is also supported. The same `subsdk9` detects the
+game from the build ID of `main` and refuses to load on unknown versions; only
+the NPDM differs (`forge-<version>-mhxx.zip` for MHXX).
+
 ## Installing (Ryujinx)
 
 1. Download the latest release from the [releases page](https://github.com/Fexty12573/forge/releases)
@@ -29,7 +33,8 @@ bash build-hardware.sh
 
 Set `PYTHON` to your Python executable if `python3` is unavailable. The script
 sets devkitARM paths only for its own process. The build checks ELF/NSO
-relocations and outputs `subsdk.nso` and `main.npdm` here.
+relocations and outputs `subsdk.nso`, `main.npdm` (MHGU) and `main-mhxx.npdm`
+(MHXX) here.
 
 The build applies the small injection-specific patches under `patches/` to the
 pinned submodule working trees. Their Git revisions remain unchanged; the patch
@@ -37,8 +42,11 @@ files are part of this repository and are safe to apply repeatedly.
 
 For the current installation, `subsdk.nso` is deployed as `exefs/subsdk9`.
 The NPDM is copied from the tested template under `metadata/` after validating
-its hash and required SVC permissions. Do not regenerate it from the old JSON
-unless you intend to change the game metadata.
+its hash and required SVC permissions; for MHXX only the ACI0 program ID is
+replaced. Deploy the NPDM for your game as `exefs/main.npdm`. Do not regenerate
+it from the old JSON unless you intend to change the game metadata.
+
+Game-specific offsets live in `source/forge/game.c`, one table per build ID.
 
 The build derives the loader version from Git tags and uses 1.5.1 for source
 archives or forks without release tags. It does not override the version with

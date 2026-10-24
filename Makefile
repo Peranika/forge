@@ -162,7 +162,7 @@ endif
 
 #---------------------------------------------------------------------------------
 
-all: $(BUILD) $(TOPDIR)/main.npdm
+all: $(BUILD) $(TOPDIR)/main.npdm $(TOPDIR)/main-mhxx.npdm
 
 # This checked-in input must never be rebuilt through the generic %.npdm rule.
 $(TOPDIR)/metadata/main-hardware.npdm: ;
@@ -171,7 +171,7 @@ prepare-dependencies:
 	@$(PYTHON) $(TOPDIR)/tools/apply_hardware_patches.py
 
 # Preserve the tested title metadata instead of regenerating unrelated fields.
-$(TOPDIR)/main.npdm: $(TOPDIR)/metadata/main-hardware.npdm $(TOPDIR)/tools/prepare_npdm.py
+$(TOPDIR)/main.npdm $(TOPDIR)/main-mhxx.npdm &: $(TOPDIR)/metadata/main-hardware.npdm $(TOPDIR)/tools/prepare_npdm.py
 	@$(PYTHON) $(TOPDIR)/tools/prepare_npdm.py
 
 $(NPDMTOOL): $(SWITCH_TOOLS_SRC)/npdmtool.c $(SWITCH_TOOLS_SRC)/cJSON.c $(SWITCH_TOOLS_SRC)/cJSON.h
